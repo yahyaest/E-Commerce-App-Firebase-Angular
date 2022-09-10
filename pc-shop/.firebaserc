@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "e-commerce-app-eb31e": {
+      "hosting": {
+        "pc-shop": [
+          "e-commerce-app-eb31e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "e-commerce-app-eb31e"
+  }
+}

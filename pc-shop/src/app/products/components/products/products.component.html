@@ -1,0 +1,10 @@
+<p>Products</p>
+
+<ul>
+  <div *ngFor="let collection of products">
+    <li *ngFor="let product of collection | keyvalue">
+      <a [routerLink]="[product.key]" [state]="product"> {{ product.key }}</a>
+    </li>
+  </div>
+</ul>
+

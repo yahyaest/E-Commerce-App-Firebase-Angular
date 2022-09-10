@@ -1,0 +1,32 @@
+<div
+  class="card mx-2 my-2 px-2 py-2"
+  style="width: 20rem; height: 600px; cursor: pointer"
+  [routerLink]="[product.slug]"
+  [state]="product"
+>
+  <div class="card-image">
+    <img
+      class="card-img-top"
+      [src]="product.images.image1.tiny"
+      alt="Card image cap"
+    />
+  </div>
+
+  <div class="card-body">
+    <h6 class="card-title">{{ product.title }}</h6>
+    <div class="card-text">
+      <p *ngIf="productPromotion === 0">{{ price | number: ".3" }} TND</p>
+      <del *ngIf="productPromotion > 0">{{ price | number: ".3" }} TND </del>
+      <p *ngIf="productPromotion > 0">
+        {{ price - (price * productPromotion) / 100 | number: ".3" }} TND
+        {{ -productPromotion }}%
+      </p>
+    </div>
+    <p class="card-text">{{ product.inventory }} In Stock</p>
+    <p style="display: flex" class="card-text flex-wrap justify-content-center">
+      <span *ngFor="let tag of productTags">
+        <div class="tag m-1 p-2">{{ tag }}</div>
+      </span>
+    </p>
+  </div>
+</div>
