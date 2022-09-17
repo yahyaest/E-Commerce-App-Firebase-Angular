@@ -1,0 +1,22 @@
+# BASE IMAGE with an alias #
+FROM node:latest as build
+WORKDIR /app
+
+# Install Angular CLI to run Build #
+RUN npm install -g @angular/cli
+
+COPY ./package.json .
+RUN npm install
+COPY . .
+RUN ng build
+
+# BASE IMAGE with an alias #
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+# Remove the default nginx static files
+RUN rm -rf ./*
+# Copy contents from the other container with alias "build" #
+# onto the specified path in the current container#CLI
+COPY --from=build /app/dist/pc-shop /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
