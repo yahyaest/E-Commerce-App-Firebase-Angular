@@ -1,26 +1,37 @@
 pipeline {
-    tools {nodejs "nodejs"}
+    tools { nodejs 'nodejs' }
 
     stages {
         stage('Checkout') {
-        checkout scm
-            sh 'env'
+            steps {
+                checkout scm
+                sh 'env'
+            }
         }
-        stage ('Install dependency') {
-            sh 'npm install'
-        } 
-        stage ('Testing Stage') {
-            sh 'npx ng test --no-watch --code-coverage'
+        stage('Install dependency') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Testing Stage') {
+            steps {
+                sh 'npx ng test --no-watch --code-coverage'
+            }
         }
         stage('Sonar Scanner Coverage') {
-            sh "npm run sonar"
+            steps {
+                sh 'npm run sonar'
+            }
         }
         stage('Make Prod Build') {
-            sh 'npx ng build'
+            steps {
+                sh 'npx ng build'
+            }
         }
-        stage ('Deploy on this Server') {
-            // TO DO 
+        stage('Deploy on this Server') {
+            steps {
+            // TO DO
+            }
         }
-}
-
+    }
 }
