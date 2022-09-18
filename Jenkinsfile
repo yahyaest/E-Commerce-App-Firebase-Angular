@@ -1,7 +1,7 @@
 pipeline {
     tools {nodejs "nodejs"}
 
-    node {
+    stages {
         stage('Checkout') {
         checkout scm
             sh 'env'
