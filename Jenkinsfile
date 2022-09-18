@@ -1,6 +1,6 @@
 node {
     stage('Checkout') {
-        sh "xcopy /E /exclude:D:\\Workspaces\\vscode_workspace\\gift-shop-monolith\\frontend\\ignore.txt D:\\Workspaces\\vscode_workspace\\gift-shop-monolith\\frontend /Y"
+       // sh "xcopy /home/yahya/Projects/E-Commerce-App-Firebase-Angular/ignore.txt D:\\Workspaces\\vscode_workspace\\gift-shop-monolith\\frontend /Y"
     }
     stage ('Install dependency') {
         sh 'npm install'
