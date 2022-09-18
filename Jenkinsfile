@@ -30,7 +30,8 @@ pipeline {
         }
         stage('Deploy on this Server') {
             steps {
-            // TO DO
+                // TO DO
+                echo 'Done'
             }
         }
     }
