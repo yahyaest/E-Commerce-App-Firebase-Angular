@@ -7,8 +7,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh "export CHROME_BIN='/usr/bin/google-chrome'"
-                sh 'export FIREFOX_BIN=/usr/bin/firefox'
                 sh 'env'
             }
         }
