@@ -20,12 +20,15 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
                 {
                     sh 'npx ng test --no-watch --code-coverage'
-                    }
+                }
             }
         }
         stage('Sonar Scanner Coverage') {
             steps {
-                sh 'npm run sonar'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+                {
+                    sh 'npm run sonar'
+                }
             }
         }
         stage('Make Prod Build') {
