@@ -9,6 +9,6 @@ COPY ./package.json .
 RUN npm install
 COPY . .
 
-EXPOSE 4200
+EXPOSE 4200 49153
 
-CMD ng serve --host 0.0.0.0
+CMD ng serve --host 0.0.0.0 --poll 2000

@@ -30,7 +30,7 @@ export class ProductsService {
     //return collectionData(collectionReference);
 
     return collectionData(collectionReference).pipe(
-      map((result) => {
+      map((result :any) => {
         for (let collection of result) {
           if ((collection as any).laptop2 || (collection as any).laptop) {
             (collection as any).laptop
@@ -74,7 +74,7 @@ export class ProductsService {
   getProduct(urlParam: any) {
     const collectionReference = collection(this.firestore, 'products');
     return collectionData(collectionReference).pipe(
-      map((result) => {
+      map((result : any) => {
         for (let collection of result) {
           let collectionTitle = Object.keys(collection)[0];
 
