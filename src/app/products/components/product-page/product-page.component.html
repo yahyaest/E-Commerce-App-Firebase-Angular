@@ -1,5 +1,17 @@
-<p>{{product.title}}</p>
+<div *ngIf="!isLoading">
+  <p>{{ product.title }}</p>
 
-<img [src]="product.images?.image1.large" alt="">
+  <img [src]="product.images?.image1.large" alt="" />
 
-<button> Add to cart</button>
+  <p>Price : {{ product.price }}</p>
+
+  <div *ngFor="let element of product.description | keyvalue" >
+   <p>{{ element.key }} : {{element.value}}</p>
+  </div>
+
+  <button>Add to cart</button>
+</div>
+
+<div *ngIf="isLoading">
+ <p>Loading ...</p>
+</div>

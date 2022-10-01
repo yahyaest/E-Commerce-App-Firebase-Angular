@@ -12,6 +12,8 @@ import { ProductsService } from '../../services/products.service';
 })
 export class ProductPageComponent implements OnInit {
   product!: Product;
+  isLoading = true;
+
   constructor(
     private productsService: ProductsService,
     private route: ActivatedRoute
@@ -21,9 +23,11 @@ export class ProductPageComponent implements OnInit {
       slug: this.route.snapshot.paramMap.get('slug'),
     };
 
-    this.productsService
-      .getProduct(urlParam)
-      .subscribe((result) => (this.product = result));
+    this.productsService.getProduct(urlParam).subscribe((result : any) => {
+      this.product = result;
+      this.isLoading = false;
+      console.log(result);
+    });
   }
 
   ngOnInit(): void {
