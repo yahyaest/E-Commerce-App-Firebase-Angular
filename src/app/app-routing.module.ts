@@ -5,6 +5,7 @@ import { HomeComponent } from './core/components/home/home.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { ProductPageComponent } from './products/components/product-page/product-page.component';
 import { ProductsComponent } from './products/components/products/products.component';
+import { CartPageComponent } from './cart/components/cart-page/cart-page.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     component: CollectionProductsComponent,
   },
   { path: 'products', component: ProductsComponent },
+  { path: 'cart/:id', component: CartPageComponent },
   {
     path: '**',
     component: NotFoundComponent,

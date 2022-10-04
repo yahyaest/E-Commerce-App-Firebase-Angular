@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CartModule } from './cart/cart.module';
 import { CoreModule } from './core/core.module';
 import { ProductsModule } from './products/products.module';
 
@@ -18,6 +19,7 @@ import { ProductsModule } from './products/products.module';
     BrowserModule,
     ProductsModule,
     CoreModule,
+    CartModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

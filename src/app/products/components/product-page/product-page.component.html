@@ -5,13 +5,22 @@
 
   <p>Price : {{ product.price }}</p>
 
-  <div *ngFor="let element of product.description | keyvalue" >
-   <p>{{ element.key }} : {{element.value}}</p>
+  <p>Inventory : {{ product.inventory }}</p>
+
+  <div *ngFor="let element of product.description | keyvalue">
+    <p>{{ element.key }} : {{ element.value }}</p>
   </div>
 
-  <button>Add to cart</button>
+  <button (click)="addOrUpdateCart()">Add to cart</button>
+
+  <div>
+    <button (click)="decreaseQuantity()">-</button>
+    <input type="text" value={{quantity}}/>
+    <button (click)="increaseQuantity()">+</button>
+  </div>
+
 </div>
 
 <div *ngIf="isLoading">
- <p>Loading ...</p>
+  <p>Loading ...</p>
 </div>

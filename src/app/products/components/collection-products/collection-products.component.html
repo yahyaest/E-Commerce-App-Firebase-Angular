@@ -13,7 +13,7 @@
   </div>
 
   <div *ngIf="!isLoading">
-    <h3>{{ collection_products?.length }} - {{ collection_title }}</h3>
+    <h3>{{ collection_products.length }} - {{ collection_title }}</h3>
     <div style="display:flex" class="flex-wrap justify-content-center">
       <div *ngFor="let product of collection_products" >
         <product-card [product]="product"></product-card>
