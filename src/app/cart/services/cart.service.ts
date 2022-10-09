@@ -15,7 +15,7 @@ import { Cart } from '../models/cart.model';
   providedIn: 'root',
 })
 export class CartService {
-  constructor(private firestore: Firestore) {}
+  constructor(public firestore: Firestore) {}
 
   getCarts() {
     const collectionReference = collection(this.firestore, 'carts');

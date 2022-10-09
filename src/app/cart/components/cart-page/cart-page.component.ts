@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from 'src/app/products/models/product.model';
+import { Router } from '@angular/router';
 import { Cart } from '../../models/cart.model';
 import { CartService } from '../../services/cart.service';
 
@@ -25,8 +24,8 @@ export class CartPageComponent implements OnInit {
       .then((result) => (this.cart = result.data() as Cart));
   }
 
-  updateCart() {
-    const cart = { ...this.cart };
+  updateCart(cart:Cart) {
+   // const cart = { ...this.cart };
     cart.last_update = new Date().toISOString();
     this.cartService.updateCart(cart);
     // Add Refresh Page
@@ -42,10 +41,7 @@ export class CartPageComponent implements OnInit {
     const productPrice = +cart.products[productIndex].product.price
       .split('TND')[0]
       .replace(',', '.');
-    cart.totalPrice =
-      quantity > this.prevQuantities[productIndex]
-        ? cart.totalPrice + productPrice
-        : cart.totalPrice - productPrice;
+    cart.totalPrice = cart.totalPrice - productPrice * this.prevQuantities[productIndex] + productPrice * quantity ;
     cart.products[productIndex].quantity = quantity
     this.cart = cart;
     this.prevQuantities[productIndex] = quantity;
