@@ -14,6 +14,7 @@ import { ProductsService } from '../../services/products.service';
 export class ProductPageComponent implements OnInit {
   product!: Product;
   cart!: Cart;
+  cartId!: string | null
   isLoading = true;
   quantity = 1;
 
@@ -54,10 +55,11 @@ export class ProductPageComponent implements OnInit {
     cart.totalPrice = productPrice * this.quantity;
     cart.created_at = new Date().toISOString();
     this.cartService.addCart(cart);
+    this.cart = cart
   }
 
-  updateCart() {
-    const cart = {...this.cart}
+  updateCart(cart:Cart) {
+    //const cart = {...this.cart}
     cart.products.push({ product: this.product, quantity: this.quantity });
     const productPrice = +this.product.price.split('TND')[0].replace(',', '.');
     cart.totalPrice = cart.totalPrice + productPrice * this.quantity;
@@ -66,13 +68,14 @@ export class ProductPageComponent implements OnInit {
   }
 
   addOrUpdateCart() {
-    const cartId = localStorage.getItem('cartId');
-    return cartId ? this.updateCart() : this.addCart();
+    const cart = {...this.cart}
+     this.cartId = localStorage.getItem('cartId');
+    return this.cartId ? this.updateCart(cart) : this.addCart();
   }
 
  async ngOnInit(): Promise<void> {
     this.product = history.state;
-    const cartId = localStorage.getItem('cartId');
-    cartId ? await this.getCart() : (this.cart = undefined as any);
+    this.cartId = localStorage.getItem('cartId');
+    this.cartId ? await this.getCart() : (this.cart = undefined as any);
   }
 }

@@ -21,7 +21,7 @@ import { Product } from '../models/product.model';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private firestore: Firestore, private route: ActivatedRoute) {}
+  constructor(private firestore: Firestore) {}
 
   getProducts() {
     let data: DocumentData[] = [];
