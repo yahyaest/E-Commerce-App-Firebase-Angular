@@ -6,11 +6,16 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
 import { ProductPageComponent } from './products/components/product-page/product-page.component';
 import { ProductsComponent } from './products/components/products/products.component';
 import { CartPageComponent } from './cart/components/cart-page/cart-page.component';
+import { LoginPageComponent } from './auth/login-page/login-page.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path:'login',
+    component: LoginPageComponent, 
   },
   {
     path: 'products/:collection/:slug',

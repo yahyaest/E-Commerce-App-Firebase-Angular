@@ -109,7 +109,6 @@ describe('ProductPageComponent', () => {
   });
 
   it('should create', () => {
-
     expect(component).toBeTruthy();
   });
 
@@ -147,7 +146,7 @@ describe('ProductPageComponent', () => {
     expect(component.cart.totalPrice).toBe((await spyResult).totalPrice);
   });
 
-  it('addOrUpdateCart()  should add cart', ()=>{
+  it('addOrUpdateCart() should add cart', ()=>{
     component.product = product
     component.cart = cart
 
@@ -162,7 +161,7 @@ describe('ProductPageComponent', () => {
 
   })
 
-  it('addOrUpdateCart()  should update cart', ()=>{
+  it('addOrUpdateCart() should update cart', ()=>{
     component.product = product
     component.cart = cart
 

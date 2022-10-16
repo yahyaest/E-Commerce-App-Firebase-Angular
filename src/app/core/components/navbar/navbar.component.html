@@ -1,19 +1,33 @@
 <div style="margin-bottom:100px">
-    <mat-toolbar color="primary"  style="position:fixed; width: 100%; top: 0; z-index:1">
-     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-toolbar color="primary" style="position:fixed; width: 100%; top: 0; z-index:1">
+        <button mat-icon-button>
       <mat-icon >menu</mat-icon>
     </button>
 
-    <span>My App</span>
-    <span class="example-spacer"></span>
-    <button *ngIf="cartId" mat-icon-button (click)="goToCartPage()" class="example-icon" aria-label="Example icon-button with share icon">
+        <span>My App</span>
+        <span class="example-spacer"></span>
+        <div *ngIf="!userId" class="d-flex flex-row mx-2">
+            <button mat-icon-button (click)="goToLoginPage()">
+            <mat-icon>login</mat-icon> 
+          </button>
+            <p class="m-0 mt-1">login</p>
+        </div>
+
+        <div *ngIf="userId" class="d-flex flex-row mx-2">
+            <button mat-icon-button (click)="logout()">
+          <mat-icon>logout</mat-icon> 
+        </button>
+            <p class="m-0 mt-1">logout</p>
+        </div>
+
+        <button *ngIf="cartId" mat-icon-button (click)="goToCartPage()">
         <mat-icon>shopping_cart_checkout </mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with heart icon">
+        <button mat-icon-button>
       <mat-icon>favorite</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <button mat-icon-button>
       <mat-icon>share</mat-icon>
     </button>
-   </mat-toolbar>
-   </div>
+    </mat-toolbar>
+</div>
