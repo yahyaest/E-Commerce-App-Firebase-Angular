@@ -7,6 +7,9 @@ import {
   faTwitter,
   faGithub,
 } from '@fortawesome/free-brands-svg-icons';
+import { Store } from '@ngrx/store';
+import { getUserId, setUserId } from 'src/app/actions/navbar.action';
+import { StoreState } from 'src/app/reducers/navbar.reducer';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -25,7 +28,17 @@ export class LoginPageComponent implements OnInit {
   faTwitter = faTwitter;
   faGithub = faGithub;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<{
+      navbar: StoreState;
+    }>
+  ) {
+    store.select('navbar').subscribe((res) => {
+      this.userId = res.userId;
+    });
+  }
 
   setIsLogin(bool: boolean) {
     this.isLogin = bool;
@@ -46,8 +59,9 @@ export class LoginPageComponent implements OnInit {
   login(f: NgForm) {
     this.authService
       .login(f.value.email, f.value.password)
-      .then((res) => {
+      .then(async (res) => {
         localStorage.setItem('userId', res.user?.uid as string);
+        this.setUserId(res.user?.uid);
         this.router.navigate(['/']);
       })
       .catch((err) => alert(err));
@@ -56,8 +70,9 @@ export class LoginPageComponent implements OnInit {
   googleLogin() {
     this.authService
       .googleLogin()
-      .then((res) => {
+      .then(async (res) => {
         localStorage.setItem('userId', res.user?.uid as string);
+        this.setUserId( res.user?.uid);
         this.router.navigate(['/']);
       })
       .catch((err) => alert(err));
@@ -69,8 +84,16 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.userId = localStorage.getItem('userId');
+  getUserId() {
+    this.store.dispatch(getUserId());
+  }
+
+  setUserId(userId: any) {
+    this.store.dispatch(setUserId(userId));
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getUserId();
     if (this.userId) this.router.navigate(['/']);
   }
 }

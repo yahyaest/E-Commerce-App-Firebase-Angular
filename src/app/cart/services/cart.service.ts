@@ -7,7 +7,7 @@ import {
   doc,
   getDoc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { Cart } from '../models/cart.model';
 
@@ -22,33 +22,26 @@ export class CartService {
     return collectionData(collectionReference);
   }
 
-  getCart(){
-    const cartId = localStorage.getItem('cartId');
+  getCart(cartId: string) {
     const collectionReference = collection(this.firestore, 'carts');
-    const documentReference = doc(collectionReference, cartId as string)
-   return getDoc(documentReference)
+    const documentReference = doc(collectionReference, cartId);
+    return getDoc(documentReference);
   }
 
   addCart(cart: Cart) {
     const collectionReference = collection(this.firestore, 'carts');
-    return addDoc(collectionReference, cart).then((result) =>
-      localStorage.setItem('cartId', result.id)
-    );
+    return addDoc(collectionReference, cart);
   }
 
-  updateCart(cart: any){
-    const cartId = localStorage.getItem('cartId');
+  updateCart(cartId: string, cart: any) {
     const collectionReference = collection(this.firestore, 'carts');
-    const documentReference = doc(collectionReference, cartId as string)
-    return updateDoc(documentReference,cart)
-    
+    const documentReference = doc(collectionReference, cartId);
+    return updateDoc(documentReference, cart);
   }
 
-  deleteCart(){
-    const cartId = localStorage.getItem('cartId');
+  deleteCart(cartId: string) {
     const collectionReference = collection(this.firestore, 'carts');
-    const documentReference = doc(collectionReference, cartId as string)
-    localStorage.removeItem('cartId')
-    return deleteDoc(documentReference)
+    const documentReference = doc(collectionReference, cartId);
+    return deleteDoc(documentReference);
   }
 }

@@ -1,38 +1,41 @@
-
-<div *ngIf="isLoading">
- <p>Loading...</p>
+<div *ngIf="!cartId">
+    <p>No cart created ...</p>
 </div>
 
+<div *ngIf="isLoading && cartId">
+    <p>Loading...</p>
+</div>
 
 <div *ngIf="!isLoading">
- <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Produc tName</th>
-      <th scope="col">Product Price</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let element of cart.products; let i =index">
-      <th class = "center" scope="row">{{i}}</th>
-      <td>
-       <img src={{element.product.images.image1.tiny}} alt={{element.product.title}} width="75px" class="mx-5">
-       {{element.product.title}}
-      </td>
-      <td class = "center">{{element.product.price}}</td>
-      <td class = "center">
-       <input type="number" #quantity [value]="element.quantity" min="1" max="{{element.product.inventory}}" (change)="updateCartProductQuantity(i,+quantity.value)">
-      </td>
-      <td class = "center">
-       <button type="button" class="btn btn-danger btn-sm" (click)="deleteCartProduct(i)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
- </table>
- <p>Total Price : {{cart.totalPrice}} $ </p>
- <button (click)="updateCart(cart)">Save</button>
- <button (click)="deleteCart()">Delete Cart</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Produc tName</th>
+                <th scope="col">Product Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let element of cart.products; let i = index">
+                <th class="center" scope="row">{{ i }}</th>
+                <td>
+                    <img src="{{ element.product.images.image1.tiny }}" alt="{{ element.product.title }}" width="75px" class="mx-5" /> {{ element.product.title }}
+                </td>
+                <td class="center">{{ element.product.price }}</td>
+                <td class="center">
+                    <input type="number" #quantity [value]="element.quantity" min="1" max="{{ element.product.inventory }}" (change)="updateCartProductQuantity(i, +quantity.value)" />
+                </td>
+                <td class="center">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteCartProduct(i)">
+            Delete
+          </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Total Price : {{ cart.totalPrice }} $</p>
+    <button (click)="updateCart(cart)">Save</button>
+    <button (click)="deleteCart()">Delete Cart</button>
 </div>

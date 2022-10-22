@@ -16,6 +16,10 @@ import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { CoreModule } from './core/core.module';
 import { ProductsModule } from './products/products.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { navbarReducer } from './reducers/navbar.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,9 +36,15 @@ import { ProductsModule } from './products/products.module';
     provideFirestore(() => getFirestore()),
     NgbModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    StoreModule.forRoot({ navbar: navbarReducer }, {}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
-  providers: [ { provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
+  providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebase }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
