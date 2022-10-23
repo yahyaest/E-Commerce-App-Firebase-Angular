@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getCartId, removeCartId } from 'src/app/actions/navbar.action';
+import { getCartId, removeCartId, setOrderId } from 'src/app/actions/navbar.action';
+import { OrderService } from 'src/app/order/services/order.service';
 import { StoreState } from 'src/app/reducers/navbar.reducer';
 import { Cart } from '../../models/cart.model';
 import { CartService } from '../../services/cart.service';
+import { Order } from '../../models/order.model';
 
 @Component({
   selector: 'app-cart-page',
@@ -20,6 +22,7 @@ export class CartPageComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
+    private orderService: OrderService,
     private router: Router,
     private store: Store<{
       navbar: StoreState;
@@ -31,21 +34,18 @@ export class CartPageComponent implements OnInit {
   }
 
   getCart() {
-    // const cartId = localStorage.getItem('cartId') as string;
     return this.cartService
       .getCart(this.cartId as string)
       .then((result) => (this.cart = result.data() as Cart));
   }
 
   updateCart(cart: Cart) {
-    //const cartId = localStorage.getItem('cartId') as string;
     cart.last_update = new Date().toISOString();
     this.cartService.updateCart(this.cartId as string, cart);
-    // Add Refresh Page
+    this.router.navigate(['/']);
   }
 
   deleteCart() {
-    // const cartId = localStorage.getItem('cartId') as string;
     this.cartService.deleteCart(this.cartId as string);
     localStorage.removeItem('cartId');
     this.store.dispatch(removeCartId())
@@ -79,6 +79,19 @@ export class CartPageComponent implements OnInit {
 
   getCartId() {
     this.store.dispatch(getCartId());
+  }
+
+  addOrder(){
+    let order : Order = {} as Order
+    order.created_at  = new Date().toISOString();
+    order.products = this.cart.products
+    order.totalPrice = this.cart.totalPrice
+    order.status = 'Not Started'
+    this.orderService.addOrder(order).then((result) => {
+      localStorage.setItem('orderId', result.id);
+      this.store.dispatch(setOrderId(result.id))
+
+    });
   }
 
   async ngOnInit(): Promise<void> {

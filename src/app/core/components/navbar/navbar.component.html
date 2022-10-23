@@ -23,6 +23,9 @@
         <button *ngIf="cartId" mat-icon-button (click)="goToCartPage()">
         <mat-icon>shopping_cart_checkout </mat-icon>
     </button>
+        <button *ngIf="orderId" mat-icon-button (click)="goToOrderPage()">
+      <mat-icon>book</mat-icon>
+  </button>
         <button mat-icon-button>
       <mat-icon>favorite</mat-icon>
     </button>

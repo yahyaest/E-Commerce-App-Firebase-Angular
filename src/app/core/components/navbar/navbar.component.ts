@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   getCartId,
+  getOrderId,
   getUserId,
   removeUserId,
 } from 'src/app/actions/navbar.action';
@@ -16,6 +17,7 @@ import { StoreState } from 'src/app/reducers/navbar.reducer';
 })
 export class NavbarComponent implements OnInit {
   cartId!: string | null;
+  orderId!: string | null;
   userId!: string | null;
   constructor(
     private authService: AuthService,
@@ -27,11 +29,16 @@ export class NavbarComponent implements OnInit {
     store.select('navbar').subscribe((res) => {
       this.userId = res.userId;
       this.cartId = res.cartId;
+      this.orderId = res.orderId;
     });
   }
 
   goToCartPage() {
     this.router.navigate(['cart', `${this.cartId}`]);
+  }
+
+  goToOrderPage() {
+    this.router.navigate(['order', `${this.orderId}`]);
   }
 
   goToLoginPage() {
@@ -58,10 +65,14 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(getCartId());
   }
 
+  getOrderId() {
+    this.store.dispatch(getOrderId());
+  }
+
   async ngOnInit(): Promise<void> {
     this.cartId = localStorage.getItem('cartId');
     await this.getUserId();
     await this.getCartId();
-    console.log(this.userId, this.cartId);
+    await this.getOrderId();
   }
 }

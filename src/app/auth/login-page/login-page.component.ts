@@ -5,7 +5,7 @@ import {
   faFacebook,
   faGoogle,
   faTwitter,
-  faGithub,
+  faGithub
 } from '@fortawesome/free-brands-svg-icons';
 import { Store } from '@ngrx/store';
 import { getUserId, setUserId } from 'src/app/actions/navbar.action';

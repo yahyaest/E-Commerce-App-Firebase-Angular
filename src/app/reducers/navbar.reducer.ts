@@ -6,14 +6,18 @@ import {
   getCartId,
   removeCartId,
   setCartId,
+  getOrderId,
+  removeOrderId,
+  setOrderId,
 } from '../actions/navbar.action';
 
 export interface StoreState {
   userId: string | null;
   cartId: string | null;
+  orderId: string | null;
 }
 
-export const initialState: StoreState = { userId: null, cartId: null };
+export const initialState: StoreState = { userId: null, cartId: null,orderId:null };
 
 export const navbarReducer = createReducer(
   initialState,
@@ -41,5 +45,18 @@ export const navbarReducer = createReducer(
   on(removeCartId, (state) => ({
     ...state,
     cartId: null
+  })),
+
+  on(getOrderId, (state) => ({
+    ...state,
+    orderId: localStorage.getItem('orderId'),
+  })),
+  on(setOrderId, (state, props) => ({
+    ...state,
+    orderId : props.orderId,
+  })),
+  on(removeOrderId, (state) => ({
+    ...state,
+    orderId: null
   }))
 );
