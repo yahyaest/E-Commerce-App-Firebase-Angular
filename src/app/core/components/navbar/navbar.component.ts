@@ -5,7 +5,10 @@ import {
   getCartId,
   getOrderId,
   getUserId,
+  getUsername,
+  removeOrderId,
   removeUserId,
+  removeUsername,
 } from 'src/app/actions/navbar.action';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { StoreState } from 'src/app/reducers/navbar.reducer';
@@ -19,6 +22,7 @@ export class NavbarComponent implements OnInit {
   cartId!: string | null;
   orderId!: string | null;
   userId!: string | null;
+  username!: string | null;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -30,6 +34,7 @@ export class NavbarComponent implements OnInit {
       this.userId = res.userId;
       this.cartId = res.cartId;
       this.orderId = res.orderId;
+      this.username = res.username;
     });
   }
 
@@ -45,12 +50,28 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  logout() {
-    this.authService.logout().then(() => {
+  goToUserPage() {
+    this.router.navigate(['user', `${this.username}`]);
+  }
+
+ async logout() {
+   const logout = await this.authService.logout()
       this.removeUserId();
+      this.removeUsername();
+      this.removeOrderId();
       localStorage.removeItem('userId');
+      localStorage.removeItem('user');
+      localStorage.removeItem('orderId');
       this.router.navigate(['/']);
-    });
+    
+  }
+
+  getUsername() {
+    this.store.dispatch(getUsername());
+  }
+
+  removeUsername() {
+    this.store.dispatch(removeUsername());
   }
 
   getUserId() {
@@ -69,10 +90,14 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(getOrderId());
   }
 
+  removeOrderId() {
+    this.store.dispatch(removeOrderId());
+  }
+
   async ngOnInit(): Promise<void> {
-    this.cartId = localStorage.getItem('cartId');
     await this.getUserId();
     await this.getCartId();
     await this.getOrderId();
+    await this.getUsername();
   }
 }

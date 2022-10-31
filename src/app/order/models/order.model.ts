@@ -8,5 +8,6 @@ export interface Order {
  totalPrice : number;
  created_at?: string;
  last_update?: string;
- status: OrderState
+ status: OrderState;
+ clientEmail:string;
 }

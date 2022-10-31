@@ -8,10 +8,11 @@ import {
   removeCartId,
   removeOrderId,
 } from 'src/app/actions/navbar.action';
-import { Order } from 'src/app/cart/models/order.model';
+import { Order } from 'src/app/order/models/order.model';
 import { CartService } from 'src/app/cart/services/cart.service';
 import { StoreState } from 'src/app/reducers/navbar.reducer';
 import { OrderService } from '../services/order.service';
+import { User } from 'src/app/user/models/user.model';
 
 @Component({
   selector: 'app-order-page',
@@ -20,6 +21,7 @@ import { OrderService } from '../services/order.service';
 })
 export class OrderPageComponent implements OnInit {
   order!: Order;
+  user!: User;
   userId!: string | null;
   cartId!: string | null;
   orderId!: string | null;
@@ -40,17 +42,21 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  getOrder() {
-    return this.orderService
-      .getOrder(this.orderId as string)
-      .then((result) => (this.order = result.data() as Order));
+  async getOrder() {
+    try {
+      const order = await this.orderService.getOrder(this.orderId as string);
+      this.order = order.data() as Order;
+      this.order.clientEmail = this.user.email;
+    } catch (err) {
+      alert(err);
+    }
   }
 
   deleteOrder() {
     this.orderService.deleteOrder(this.orderId as string);
     localStorage.removeItem('orderId');
     this.store.dispatch(removeOrderId());
-    this.deleteCart()
+    this.deleteCart();
     this.router.navigate(['/']);
   }
 
@@ -75,6 +81,7 @@ export class OrderPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getUserId();
+    this.user = JSON.parse(localStorage.getItem('user') as string);
     await this.getCartId();
     await this.getOrderId();
     this.isLoading = false;

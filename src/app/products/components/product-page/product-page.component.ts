@@ -52,24 +52,30 @@ export class ProductPageComponent implements OnInit {
     if (this.quantity > 1) this.quantity--;
   }
 
-  getCart() {
+  async getCart() {
     const cartId = localStorage.getItem('cartId') as string;
-    return this.cartService
-      .getCart(cartId)
-      .then((result) => (this.cart = result.data() as Cart));
+    try {
+      const cart = await this.cartService.getCart(cartId);
+      this.cart = cart.data() as Cart;
+    } catch (err) {
+      alert(err);
+    }
   }
 
-  addCart() {
+  async addCart() {
     const cart: Cart = { products: [], totalPrice: 0 };
     cart.products.push({ product: this.product, quantity: this.quantity });
     const productPrice = +this.product.price.split('TND')[0].replace(',', '.');
     cart.totalPrice = productPrice * this.quantity;
     cart.created_at = new Date().toISOString();
-    this.cartService.addCart(cart).then((result) => {
-      localStorage.setItem('cartId', result.id);
-      this.store.dispatch(setCartId(result.id))
+    try {
+      const addedCart = await this.cartService.addCart(cart);
+      localStorage.setItem('cartId', addedCart.id);
+      this.store.dispatch(setCartId(addedCart.id));
+    } catch (err) {
+      alert(err);
+    }
 
-    });
     this.cart = cart;
   }
 

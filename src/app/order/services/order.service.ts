@@ -9,7 +9,7 @@ import {
   getDoc,
   updateDoc,
 } from '@angular/fire/firestore';
-import { Order } from 'src/app/cart/models/order.model';
+import { Order } from 'src/app/order/models/order.model';
 
 @Injectable({
   providedIn: 'root',

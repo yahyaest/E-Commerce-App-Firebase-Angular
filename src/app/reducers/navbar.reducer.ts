@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import {
   getUserId,
@@ -9,18 +10,24 @@ import {
   getOrderId,
   removeOrderId,
   setOrderId,
+  getUsername,
+  setUsername,
+  removeUsername,
 } from '../actions/navbar.action';
 
 export interface StoreState {
   userId: string | null;
   cartId: string | null;
   orderId: string | null;
+  username: string | null;
 }
 
-export const initialState: StoreState = { userId: null, cartId: null,orderId:null };
+export const initialState: StoreState = { userId: null, cartId: null,orderId:null,username:null };
 
 export const navbarReducer = createReducer(
   initialState,
+
+  // UserId
   on(getUserId, (state) => ({
     ...state,
     userId: localStorage.getItem('userId'),
@@ -34,6 +41,7 @@ export const navbarReducer = createReducer(
     userId: null,
   })),
 
+  // CartId
   on(getCartId, (state) => ({
     ...state,
     cartId: localStorage.getItem('cartId'),
@@ -46,7 +54,8 @@ export const navbarReducer = createReducer(
     ...state,
     cartId: null
   })),
-
+  
+  // OrderId
   on(getOrderId, (state) => ({
     ...state,
     orderId: localStorage.getItem('orderId'),
@@ -58,5 +67,19 @@ export const navbarReducer = createReducer(
   on(removeOrderId, (state) => ({
     ...state,
     orderId: null
-  }))
+  })),
+
+  // Username
+  on(getUsername, (state) => ({
+    ...state,
+     username: JSON.parse(localStorage.getItem('user') as string)?.username
+  })),
+  on(setUsername, (state, props) => ({
+    ...state,
+    username : props.username,
+  })),
+  on(removeUsername, (state) => ({
+    ...state,
+    username: null
+  })),
 );

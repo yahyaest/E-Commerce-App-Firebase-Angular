@@ -21,6 +21,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { navbarReducer } from './reducers/navbar.reducer';
 import { OrderModule } from './order/order.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +29,7 @@ import { OrderModule } from './order/order.module';
     BrowserModule,
     FormsModule,
     AuthModule,
+    UserModule,
     ProductsModule,
     CoreModule,
     CartModule,

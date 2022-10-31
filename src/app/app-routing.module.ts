@@ -8,6 +8,7 @@ import { ProductsComponent } from './products/components/products/products.compo
 import { CartPageComponent } from './cart/components/cart-page/cart-page.component';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { OrderPageComponent } from './order/order-page/order-page.component';
+import { UserPageComponent } from './user/user-page/user-page.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
     path:'login',
     component: LoginPageComponent, 
   },
+  { path: 'user/:username', component: UserPageComponent },
   {
     path: 'products/:collection/:slug',
     component: ProductPageComponent,

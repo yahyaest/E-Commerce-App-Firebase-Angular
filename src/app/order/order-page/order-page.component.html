@@ -15,6 +15,7 @@
                 <th scope="col">Product Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Status</th>
+                <th scope="col">Client</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
                 </td>
                 <td class="center">
                     <p>{{ order.status }}</p>
+                </td>
+                <td class="center">
+                    <p>{{ order.clientEmail }}</p>
                 </td>
             </tr>
         </tbody>
