@@ -24,6 +24,14 @@ export const setOrderId = createAction(
 );
 export const removeOrderId = createAction('[Navbar Component] RemoveOrderId');
 
+// Order Icon
+export const getIsOrderIcon= createAction('[Navbar Component] getIsOrderIcon');
+export const setIsOrderIcon= createAction(
+  '[Navbar Component] setIsOrderIcon',
+  (isOrderIcon: boolean) => ({ isOrderIcon })
+);
+export const removeIsOrderIcon = createAction('[Navbar Component] removeIsOrderIcon');
+
 // Username
 export const getUsername = createAction('[Navbar Component] GetUsername');
 export const setUsername = createAction(

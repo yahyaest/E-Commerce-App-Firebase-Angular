@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import {
   getOrderId,
   getUserId,
+  removeIsOrderIcon,
   removeOrderId,
   setNotifications,
 } from 'src/app/actions/navbar.action';
@@ -54,6 +55,18 @@ export class OrderPageComponent implements OnInit {
     this.store.dispatch(setNotifications(notifications));
   }
 
+  async getUserOrders() {
+    const email = JSON.parse(localStorage.getItem('user') as string)?.email;
+    let userOrders: Order[] = [];
+    const userOrdersDocs = await this.orderService.getUserOrders(email);
+    for (const doc of userOrdersDocs) {
+      let order = doc.data();
+      order['id'] = doc.id;
+      userOrders.push(order as Order);
+    }
+    return userOrders;
+  }
+
   async getOrder() {
     try {
       const order = await this.orderService.getOrder(this.orderId as string);
@@ -101,13 +114,20 @@ export class OrderPageComponent implements OnInit {
       created_at: new Date().toISOString(),
     };
     try {
+      // Delete Order
       this.orderService.deleteOrder(this.orderId as string);
       localStorage.removeItem('orderId');
       this.store.dispatch(removeOrderId());
+      const userOrders = await (await this.getUserOrders()).length;
+      if( userOrders < 1) {
+        this.store.dispatch(removeIsOrderIcon());
+        localStorage.setItem('isOrderIcon', 'false');
+      }
+
+      // Get user notifs
       const addedNotification = await this.notificationService.addNotification(
         notification
       );
-      // Get user notifs
       const userNotifications =
         await this.notificationService.getUserNotifications(
           this.userEmail as string

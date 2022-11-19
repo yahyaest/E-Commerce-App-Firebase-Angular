@@ -15,6 +15,9 @@ import {
   getNotifications,
   removeNotifications,
   setNotifications,
+  getIsOrderIcon,
+  setIsOrderIcon,
+  removeIsOrderIcon,
 } from '../actions/navbar.action';
 
 export interface StoreState {
@@ -23,6 +26,7 @@ export interface StoreState {
   orderId: string | null;
   username: string | null;
   notifications: number;
+  isOrderIcon: boolean;
 }
 
 export const initialState: StoreState = {
@@ -31,6 +35,7 @@ export const initialState: StoreState = {
   orderId: null,
   username: null,
   notifications: 0,
+  isOrderIcon: false,
 };
 
 export const navbarReducer = createReducer(
@@ -78,6 +83,20 @@ export const navbarReducer = createReducer(
     orderId: null,
   })),
 
+    // Order Icon
+    on(getIsOrderIcon, (state) => ({
+      ...state,
+      isOrderIcon:  JSON.parse(localStorage.getItem('isOrderIcon') as string),
+    })),
+    on(setIsOrderIcon, (state, props) => ({
+      ...state,
+      isOrderIcon: props.isOrderIcon,
+    })),
+    on(removeIsOrderIcon, (state) => ({
+      ...state,
+      isOrderIcon: false,
+    })),
+
   // Username
   on(getUsername, (state) => ({
     ...state,
@@ -93,9 +112,9 @@ export const navbarReducer = createReducer(
   })),
 
   // Notifications
-  on(getNotifications,  (state, props) => ({
+  on(getNotifications, (state, props) => ({
     ...state,
-    notifications:  props.notifications,
+    notifications: props.notifications,
   })),
   on(setNotifications, (state, props) => ({
     ...state,

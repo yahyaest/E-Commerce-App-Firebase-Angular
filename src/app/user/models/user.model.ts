@@ -1,4 +1,4 @@
-type UserRole = 'USER' | 'PREMIUM_USER' | 'ADMIN' | 'OBSERVER'
+type UserRole = 'USER' | 'PREMIUM_USER' | 'ADMIN' | 'MODERATOR'
 
 export interface User {
   username: string;

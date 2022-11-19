@@ -12,19 +12,23 @@ export class NotificationsListComponent implements OnInit {
 
   constructor(private notificationService: NotificationService) {}
 
-  getNotifications() {
-    this.notificationService
-      .getNotifications()
-      .subscribe(
-        (res) =>
-          (this.notifications = res.sort(
-            (a: any, b: any) =>
-              Date.parse(b.created_at) - Date.parse(a.created_at)
-          ).slice(0,5) as Notification[])
-      );
+  async getNotifications() {
+    const email = JSON.parse(localStorage.getItem('user') as string)?.email;
+    const notificationsDocument = await this.notificationService.getUserNotifications(
+      email
+    );
+    let notifications : Notification[] = []
+    for (let notification of notificationsDocument){
+      notifications.push(notification.data() as Notification)
+    }
+    this.notifications = notifications
+      .sort(
+        (a: any, b: any) => Date.parse(b.created_at) - Date.parse(a.created_at)
+      )
+      .slice(0, 5) as Notification[];
   }
 
-  ngOnInit(): void {
-    this.getNotifications();
+  async ngOnInit(): Promise<void> {
+    await this.getNotifications();
   }
 }

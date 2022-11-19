@@ -66,8 +66,6 @@ export class LoginPageComponent implements OnInit {
         role: 'USER',
       };
       const userRegister = await this.userService.addUser(user);
-      localStorage.setItem('userId', authRegister.user?.uid as string);
-      //localStorage.setItem('userId', userRegister.id);
       this.router.navigate(['/']);
     } catch (err) {
       alert(err);
@@ -93,6 +91,7 @@ export class LoginPageComponent implements OnInit {
 
   async googleLogin() {
     try {
+      // TO DO : adapt base on login()
       const login = await this.authService.googleLogin();
       localStorage.setItem('userId', login.user?.uid as string);
       this.setUserId(login.user?.uid);

@@ -3,16 +3,21 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   getCartId,
+  getIsOrderIcon,
   getNotifications,
   getOrderId,
   getUserId,
   getUsername,
+  removeIsOrderIcon,
   removeOrderId,
   removeUserId,
   removeUsername,
+  setIsOrderIcon,
 } from 'src/app/actions/navbar.action';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { NotificationService } from 'src/app/notification/services/notification.service';
+import { Order } from 'src/app/order/models/order.model';
+import { OrderService } from 'src/app/order/services/order.service';
 import { StoreState } from 'src/app/reducers/navbar.reducer';
 
 @Component({
@@ -27,10 +32,12 @@ export class NavbarComponent implements OnInit {
   username!: string | null;
   notifications!: number;
   displayNotification = false;
+  displayOrderIcon = false;
 
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService,
+    private orderService: OrderService,
     private router: Router,
     private store: Store<{
       navbar: StoreState;
@@ -42,6 +49,7 @@ export class NavbarComponent implements OnInit {
       this.orderId = res.orderId;
       this.username = res.username;
       this.notifications = res.notifications;
+      this.displayOrderIcon = res.isOrderIcon;
     });
   }
 
@@ -50,8 +58,9 @@ export class NavbarComponent implements OnInit {
   }
 
   goToOrderPage() {
-
-    this.orderId ? this.router.navigate(['order', `${this.orderId}`]) : this.router.navigate(['orders', `${this.username}`]) ;
+    this.orderId
+      ? this.router.navigate(['order', `${this.orderId}`])
+      : this.router.navigate(['orders', `${this.username}`]);
   }
 
   goToLoginPage() {
@@ -62,8 +71,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['user', `${this.username}`]);
   }
 
-  setDisplayNotification(){
-    this.displayNotification = !this.displayNotification
+  setDisplayNotification() {
+    this.notifications < 1
+      ? (this.displayNotification = false)
+      : (this.displayNotification = !this.displayNotification);
   }
 
   async logout() {
@@ -71,9 +82,11 @@ export class NavbarComponent implements OnInit {
     this.removeUserId();
     this.removeUsername();
     this.removeOrderId();
+    this.removeIsOrderIcon();
     localStorage.removeItem('userId');
     localStorage.removeItem('user');
     localStorage.removeItem('orderId');
+    localStorage.removeItem('isOrderIcon');
     this.router.navigate(['/']);
   }
 
@@ -105,17 +118,47 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(removeOrderId());
   }
 
-  async getUserNotifications  (userEmail: string)  {
-    const userNotifications = await this.notificationService.getUserNotifications(
-      userEmail
-    );
-    return userNotifications.length
-  };
+  removeIsOrderIcon() {
+    this.store.dispatch(removeIsOrderIcon());
+  }
+
+  async getUserNotifications(userEmail: string) {
+    const userNotifications =
+      await this.notificationService.getUserNotifications(userEmail);
+    return userNotifications.length;
+  }
 
   async getNotifications() {
-    const userEmail = JSON.parse(localStorage.getItem('user')as string).email
-    const userNotifications = await this.getUserNotifications(userEmail)
+    const userEmail = JSON.parse(localStorage.getItem('user') as string)?.email;
+    const userNotifications = await this.getUserNotifications(userEmail);
     this.store.dispatch(getNotifications(userNotifications));
+  }
+
+  async getUserOrders() {
+    const email = JSON.parse(localStorage.getItem('user') as string)?.email;
+    let userOrders: Order[] = [];
+    const userOrdersDocs = await this.orderService.getUserOrders(email);
+    for (const doc of userOrdersDocs) {
+      let order = doc.data();
+      order['id'] = doc.id;
+      userOrders.push(order as Order);
+    }
+    return userOrders;
+  }
+
+  async HandleOrderIcon() {
+    if (this.userId) {
+      const userOrders = await (await this.getUserOrders()).length;
+      if (this.orderId || userOrders > 0) {
+        this.displayOrderIcon = true;
+        localStorage.setItem('isOrderIcon', 'true');
+        this.store.dispatch(setIsOrderIcon(true));
+      }
+    } else {
+      this.displayOrderIcon = false;
+      localStorage.setItem('isOrderIcon', 'false');
+      this.store.dispatch(setIsOrderIcon(false));
+    }
   }
 
   async ngOnInit(): Promise<void> {
@@ -124,5 +167,6 @@ export class NavbarComponent implements OnInit {
     await this.getOrderId();
     await this.getUsername();
     await this.getNotifications();
+    await this.HandleOrderIcon();
   }
 }

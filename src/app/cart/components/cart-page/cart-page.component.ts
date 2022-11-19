@@ -5,6 +5,7 @@ import {
   getCartId,
   getNotifications,
   removeCartId,
+  setIsOrderIcon,
   setNotifications,
   setOrderId,
 } from 'src/app/actions/navbar.action';
@@ -115,6 +116,8 @@ export class CartPageComponent implements OnInit {
         const addedOrder = await this.orderService.addOrder(order);
         localStorage.setItem('orderId', addedOrder.id);
         this.store.dispatch(setOrderId(addedOrder.id));
+        localStorage.setItem('isOrderIcon', 'true');
+        this.store.dispatch(setIsOrderIcon(true));
         // Delete Cart
         this.deleteCart();
         // Create Notification
