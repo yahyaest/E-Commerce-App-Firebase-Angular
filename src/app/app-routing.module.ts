@@ -7,8 +7,9 @@ import { ProductPageComponent } from './products/components/product-page/product
 import { ProductsComponent } from './products/components/products/products.component';
 import { CartPageComponent } from './cart/components/cart-page/cart-page.component';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
-import { OrderPageComponent } from './order/order-page/order-page.component';
+import { OrderPageComponent } from './order/components/order-page/order-page.component';
 import { UserPageComponent } from './user/user-page/user-page.component';
+import { UserOrdersComponent } from './order/components/user-orders/user-orders.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'cart/:id', component: CartPageComponent },
   { path: 'order/:id', component: OrderPageComponent },
+  { path: 'orders/:username', component: UserOrdersComponent },
   {
     path: '**',
     component: NotFoundComponent,

@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   getCartId,
+  getNotifications,
   removeCartId,
+  setNotifications,
   setOrderId,
 } from 'src/app/actions/navbar.action';
 import { OrderService } from 'src/app/order/services/order.service';
@@ -11,6 +13,8 @@ import { StoreState } from 'src/app/reducers/navbar.reducer';
 import { Cart } from '../../models/cart.model';
 import { CartService } from '../../services/cart.service';
 import { Order } from '../../../order/models/order.model';
+import { NotificationService } from 'src/app/notification/services/notification.service';
+import { Notification } from 'src/app/notification/models/notification.model';
 
 @Component({
   selector: 'app-cart-page',
@@ -20,6 +24,9 @@ import { Order } from '../../../order/models/order.model';
 export class CartPageComponent implements OnInit {
   cart!: Cart;
   cartId!: string | null;
+  userId!: string | null;
+  userEmail!: string | null;
+  notifications!: Number;
   quantity = 1;
   isLoading = true;
   prevQuantities: number[] = [];
@@ -27,6 +34,7 @@ export class CartPageComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private orderService: OrderService,
+    private notificationService: NotificationService,
     private router: Router,
     private store: Store<{
       navbar: StoreState;
@@ -34,6 +42,8 @@ export class CartPageComponent implements OnInit {
   ) {
     store.select('navbar').subscribe((res) => {
       this.cartId = res.cartId;
+      this.userId = res.userId;
+      this.notifications = res.notifications;
     });
   }
 
@@ -88,27 +98,60 @@ export class CartPageComponent implements OnInit {
     this.store.dispatch(getCartId());
   }
 
+  setNotifications(notifications: number) {
+    this.store.dispatch(setNotifications(notifications));
+  }
+
   async addOrder() {
-    let order: Order = {} as Order;
-    order.created_at = new Date().toISOString();
-    order.products = this.cart.products;
-    order.totalPrice = this.cart.totalPrice;
-    order.status = 'Not Started';
-    try {
-      const addedOrder = await this.orderService.addOrder(order);
-      localStorage.setItem('orderId', addedOrder.id);
-      this.store.dispatch(setOrderId(addedOrder.id));
-    } catch (err) {
-      alert(err);
+    if (this.userId) {
+      let order: Order = {} as Order;
+      order.created_at = new Date().toISOString();
+      order.products = this.cart.products;
+      order.totalPrice = this.cart.totalPrice;
+      order.status = 'Not Started';
+      order.clientEmail = JSON.parse(localStorage.getItem('user')as string).email;
+      try {
+        // Create Order
+        const addedOrder = await this.orderService.addOrder(order);
+        localStorage.setItem('orderId', addedOrder.id);
+        this.store.dispatch(setOrderId(addedOrder.id));
+        // Delete Cart
+        this.deleteCart();
+        // Create Notification
+        const notification: Notification = {
+          title: 'Order Created',
+          discription: `A new order was created by ${
+            JSON.parse(localStorage.getItem('user') as string).username
+          }`,
+          userEmail: this.userEmail as string,
+          created_at: new Date().toISOString(),
+        };
+        const addedNotification =
+          await this.notificationService.addNotification(notification);
+        // Get user notifs
+        const userNotifications =
+          await this.notificationService.getUserNotifications(
+            this.userEmail as string
+          );
+        this.setNotifications(userNotifications.length);
+        this.router.navigate(['/']);
+      } catch (err) {
+        alert(err);
+      }
     }
   }
 
   async ngOnInit(): Promise<void> {
     await this.getCartId();
     await this.getCart();
-    this.isLoading = false;
     for (let element of this.cart.products) {
       this.prevQuantities.push(element.quantity);
     }
+    this.userId
+      ? (this.userEmail = JSON.parse(
+          localStorage.getItem('user') as string
+        ).email)
+      : (this.userEmail = null);
+    this.isLoading = false;
   }
 }

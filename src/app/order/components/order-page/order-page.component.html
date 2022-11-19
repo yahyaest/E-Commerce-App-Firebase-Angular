@@ -1,8 +1,8 @@
-<div *ngIf="!cartId">
+<div *ngIf="!orderId">
     <p>No Order created ...</p>
 </div>
 
-<div *ngIf="isLoading && cartId">
+<div *ngIf="isLoading">
     <p>Loading...</p>
 </div>
 
@@ -38,5 +38,7 @@
         </tbody>
     </table>
     <p>Total Price : {{ order.totalPrice }} $</p>
-    <button (click)="deleteOrder()">Delete Order</button>
+    <button *ngIf="order.status === 'Not Started' || order.status === 'In Progress' " (click)="cancelOrder()">Cancel Order</button>
+    <button *ngIf="order.status === 'Not Started'" (click)="confirmOrder()" >Confirm Order</button>
+    <button *ngIf="username" (click)="goToUserOrders()" >See All Orders</button>
 </div>

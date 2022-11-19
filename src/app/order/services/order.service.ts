@@ -7,7 +7,10 @@ import {
   doc,
   Firestore,
   getDoc,
+  getDocs,
+  query,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { Order } from 'src/app/order/models/order.model';
 
@@ -26,6 +29,13 @@ export class OrderService {
     const collectionReference = collection(this.firestore, 'orders');
     const documentReference = doc(collectionReference, orderId);
     return getDoc(documentReference);
+  }
+
+  async getUserOrders(userEmail:string){
+    const collectionReference = collection(this.firestore, 'orders');
+    const q = query(collectionReference, where("clientEmail", "==", userEmail))
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs
   }
 
   addOrder(order: Order) {

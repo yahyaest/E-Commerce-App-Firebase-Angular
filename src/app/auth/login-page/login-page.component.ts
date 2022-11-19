@@ -81,7 +81,6 @@ export class LoginPageComponent implements OnInit {
         f.value.password
       );
       const user = await this.userService.getUser(f.value.email);
-      console.log(user.data());
       localStorage.setItem('userId', login.user?.uid as string);
       this.setUserId(login.user?.uid);
       localStorage.setItem('user', JSON.stringify(user.data()))

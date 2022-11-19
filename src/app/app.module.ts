@@ -22,23 +22,25 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { navbarReducer } from './reducers/navbar.reducer';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
+import { NotificationModule } from './notification/notification.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
+    NgbModule,
     AuthModule,
     UserModule,
     ProductsModule,
     CoreModule,
     CartModule,
     OrderModule,
+    NotificationModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    NgbModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
     StoreModule.forRoot({ navbar: navbarReducer }, {}),

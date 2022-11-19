@@ -31,3 +31,16 @@ export const setUsername = createAction(
   (username: string) => ({ username })
 );
 export const removeUsername = createAction('[Navbar Component] RemoveUsername');
+
+// Notifications
+export const getNotifications = createAction(
+  '[Navbar Component] getNotifications',
+  (notifications: number) => ({ notifications })
+);
+export const setNotifications = createAction(
+  '[Navbar Component] setNotifications',
+  (notifications: number) => ({ notifications })
+);
+export const removeNotifications = createAction(
+  '[Navbar Component] removeNotifications'
+);

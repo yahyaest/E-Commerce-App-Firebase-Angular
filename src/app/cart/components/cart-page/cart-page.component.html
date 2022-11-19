@@ -38,5 +38,5 @@
     <p>Total Price : {{ cart.totalPrice }} $</p>
     <button (click)="updateCart(cart)">Save</button>
     <button (click)="deleteCart()">Delete Cart</button>
-    <button (click)="addOrder()">Order Now</button>
+    <button *ngIf="userId" (click)="addOrder()">Order Now</button>
 </div>

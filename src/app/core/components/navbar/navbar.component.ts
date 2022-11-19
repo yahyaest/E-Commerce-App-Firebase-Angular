@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   getCartId,
+  getNotifications,
   getOrderId,
   getUserId,
   getUsername,
@@ -11,6 +12,7 @@ import {
   removeUsername,
 } from 'src/app/actions/navbar.action';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { NotificationService } from 'src/app/notification/services/notification.service';
 import { StoreState } from 'src/app/reducers/navbar.reducer';
 
 @Component({
@@ -23,8 +25,12 @@ export class NavbarComponent implements OnInit {
   orderId!: string | null;
   userId!: string | null;
   username!: string | null;
+  notifications!: number;
+  displayNotification = false;
+
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private router: Router,
     private store: Store<{
       navbar: StoreState;
@@ -35,6 +41,7 @@ export class NavbarComponent implements OnInit {
       this.cartId = res.cartId;
       this.orderId = res.orderId;
       this.username = res.username;
+      this.notifications = res.notifications;
     });
   }
 
@@ -43,7 +50,8 @@ export class NavbarComponent implements OnInit {
   }
 
   goToOrderPage() {
-    this.router.navigate(['order', `${this.orderId}`]);
+
+    this.orderId ? this.router.navigate(['order', `${this.orderId}`]) : this.router.navigate(['orders', `${this.username}`]) ;
   }
 
   goToLoginPage() {
@@ -54,16 +62,19 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['user', `${this.username}`]);
   }
 
- async logout() {
-   const logout = await this.authService.logout()
-      this.removeUserId();
-      this.removeUsername();
-      this.removeOrderId();
-      localStorage.removeItem('userId');
-      localStorage.removeItem('user');
-      localStorage.removeItem('orderId');
-      this.router.navigate(['/']);
-    
+  setDisplayNotification(){
+    this.displayNotification = !this.displayNotification
+  }
+
+  async logout() {
+    const logout = await this.authService.logout();
+    this.removeUserId();
+    this.removeUsername();
+    this.removeOrderId();
+    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
+    localStorage.removeItem('orderId');
+    this.router.navigate(['/']);
   }
 
   getUsername() {
@@ -94,10 +105,24 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(removeOrderId());
   }
 
+  async getUserNotifications  (userEmail: string)  {
+    const userNotifications = await this.notificationService.getUserNotifications(
+      userEmail
+    );
+    return userNotifications.length
+  };
+
+  async getNotifications() {
+    const userEmail = JSON.parse(localStorage.getItem('user')as string).email
+    const userNotifications = await this.getUserNotifications(userEmail)
+    this.store.dispatch(getNotifications(userNotifications));
+  }
+
   async ngOnInit(): Promise<void> {
     await this.getUserId();
     await this.getCartId();
     await this.getOrderId();
     await this.getUsername();
+    await this.getNotifications();
   }
 }

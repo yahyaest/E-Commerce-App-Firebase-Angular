@@ -1,44 +1,74 @@
-<div style="margin-bottom:100px">
-    <mat-toolbar color="primary" style="position:fixed; width: 100%; top: 0; z-index:1">
-        <button mat-icon-button>
-      <mat-icon >menu</mat-icon>
+<div style="margin-bottom: 100px">
+  <mat-toolbar
+    color="primary"
+    style="position: fixed; width: 100%; top: 0; z-index: 1"
+  >
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
     </button>
 
-        <span>My App</span>
-        <span class="example-spacer"></span>
+    <span>My App</span>
+    <span class="example-spacer"></span>
 
-        <div *ngIf="username" class="d-flex flex-row mx-2">
-          <button mat-icon-button (click)="goToUserPage()">
-          <mat-icon>supervised_user_circle</mat-icon> 
-        </button>
-          <p class="m-0 mt-1">{{username}}</p>
-      </div>
-        
-        <div *ngIf="!userId" class="d-flex flex-row mx-2">
-            <button mat-icon-button (click)="goToLoginPage()">
-            <mat-icon>login</mat-icon> 
+    <ul class="d-flex flex-row">
+      <li *ngIf="userId" ngbDropdown class="d-inline-block list-unstyled">
+        <div class="d-flex flex-row mx-2" >
+          <button mat-icon-button (click)="setDisplayNotification()" id="dropdownBasic1" ngbDropdownToggle>
+            <mat-icon>notifications</mat-icon>
           </button>
-            <p class="m-0 mt-1">login</p>
+          <p class="m-0 mt-1">{{ notifications }}</p>
         </div>
 
-        <div *ngIf="userId" class="d-flex flex-row mx-2">
-            <button mat-icon-button (click)="logout()">
-          <mat-icon>logout</mat-icon> 
+        <div *ngIf="displayNotification" ngbDropdownMenu aria-labelledby="dropdownBasic1" style="margin-right: 30px;">
+            <app-notifications-list ></app-notifications-list>
+        
+           </div>
+      </li>
+
+      <li *ngIf="username" class="d-flex flex-row mx-2 list-unstyled">
+        <button mat-icon-button (click)="goToUserPage()">
+          <mat-icon>supervised_user_circle</mat-icon>
         </button>
-            <p class="m-0 mt-1">logout</p>
-        </div>
+        <p class="m-0 mt-1">{{ username }}</p>
+      </li>
 
+      <li *ngIf="!userId" class="d-flex flex-row mx-2 list-unstyled">
+        <button mat-icon-button (click)="goToLoginPage()">
+          <mat-icon>login</mat-icon>
+        </button>
+        <p class="m-0 mt-1">login</p>
+      </li>
+
+      <li *ngIf="userId" class="d-flex flex-row mx-2 list-unstyled">
+        <button mat-icon-button (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+        <p class="m-0 mt-1">logout</p>
+      </li>
+
+      <li class="list-unstyled">
         <button *ngIf="cartId" mat-icon-button (click)="goToCartPage()">
-        <mat-icon>shopping_cart_checkout </mat-icon>
-    </button>
-        <button *ngIf="orderId" mat-icon-button (click)="goToOrderPage()">
-      <mat-icon>book</mat-icon>
-  </button>
+          <mat-icon>shopping_cart_checkout </mat-icon>
+        </button>
+      </li>
+
+      <li class="list-unstyled">
+        <button *ngIf="orderId || username" mat-icon-button (click)="goToOrderPage()">
+          <mat-icon>book</mat-icon>
+        </button>
+      </li>
+
+      <li class="list-unstyled">
         <button mat-icon-button>
-      <mat-icon>favorite</mat-icon>
-    </button>
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </li>
+
+      <li class="list-unstyled">
         <button mat-icon-button>
-      <mat-icon>share</mat-icon>
-    </button>
-    </mat-toolbar>
+          <mat-icon>share</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </mat-toolbar>
 </div>

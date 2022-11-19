@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import {
   getUserId,
@@ -13,6 +12,9 @@ import {
   getUsername,
   setUsername,
   removeUsername,
+  getNotifications,
+  removeNotifications,
+  setNotifications,
 } from '../actions/navbar.action';
 
 export interface StoreState {
@@ -20,9 +22,16 @@ export interface StoreState {
   cartId: string | null;
   orderId: string | null;
   username: string | null;
+  notifications: number;
 }
 
-export const initialState: StoreState = { userId: null, cartId: null,orderId:null,username:null };
+export const initialState: StoreState = {
+  userId: null,
+  cartId: null,
+  orderId: null,
+  username: null,
+  notifications: 0,
+};
 
 export const navbarReducer = createReducer(
   initialState,
@@ -48,13 +57,13 @@ export const navbarReducer = createReducer(
   })),
   on(setCartId, (state, props) => ({
     ...state,
-    cartId : props.cartId,
+    cartId: props.cartId,
   })),
   on(removeCartId, (state) => ({
     ...state,
-    cartId: null
+    cartId: null,
   })),
-  
+
   // OrderId
   on(getOrderId, (state) => ({
     ...state,
@@ -62,24 +71,38 @@ export const navbarReducer = createReducer(
   })),
   on(setOrderId, (state, props) => ({
     ...state,
-    orderId : props.orderId,
+    orderId: props.orderId,
   })),
   on(removeOrderId, (state) => ({
     ...state,
-    orderId: null
+    orderId: null,
   })),
 
   // Username
   on(getUsername, (state) => ({
     ...state,
-     username: JSON.parse(localStorage.getItem('user') as string)?.username
+    username: JSON.parse(localStorage.getItem('user') as string)?.username,
   })),
   on(setUsername, (state, props) => ({
     ...state,
-    username : props.username,
+    username: props.username,
   })),
   on(removeUsername, (state) => ({
     ...state,
-    username: null
+    username: null,
   })),
+
+  // Notifications
+  on(getNotifications,  (state, props) => ({
+    ...state,
+    notifications:  props.notifications,
+  })),
+  on(setNotifications, (state, props) => ({
+    ...state,
+    notifications: props.notifications,
+  })),
+  on(removeNotifications, (state) => ({
+    ...state,
+    notifications: 0,
+  }))
 );
