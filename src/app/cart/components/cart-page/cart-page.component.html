@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let element of cart.products; let i = index">
-                <th class="center" scope="row">{{ i }}</th>
+                <th class="center" scope="row">{{ i + 1 }}</th>
                 <td>
                     <img src="{{ element.product.images.image1.tiny }}" alt="{{ element.product.title }}" width="75px" class="mx-5" /> {{ element.product.title }}
                 </td>

@@ -83,7 +83,8 @@ export class LoginPageComponent implements OnInit {
       this.setUserId(login.user?.uid);
       localStorage.setItem('user', JSON.stringify(user.data()))
       this.setUsername(user.data()['username'])
-      this.router.navigate(['/']);
+      //this.router.navigate(['/']);
+      window.location.href = '/'  // force reload
     } catch (err) {
       alert(err);
     }

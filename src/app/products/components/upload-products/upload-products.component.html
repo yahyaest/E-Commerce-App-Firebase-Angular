@@ -1,0 +1,14 @@
+<div class="container">
+<h4>Upload Collection Products</h4>
+<mat-form-field appearance="fill">
+  <mat-label>Collection</mat-label>
+  <mat-select >
+    <mat-option *ngFor="let component of components" [value]="component.value" (click)="this.collection = component.value">
+      {{ component.viewValue }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+ <button mat-raised-button color="primary" (click)="postProductCollection(this.collection)">Upload</button>
+ </div>

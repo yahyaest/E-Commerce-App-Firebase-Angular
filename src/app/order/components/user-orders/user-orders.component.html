@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let order of userOrders; let i = index">
-        <th class="center" scope="row">{{ i }}</th>
+        <th class="center" scope="row">{{ i + 1 }}</th>
         <td class="center">{{ order.created_at }}</td>
         <td class="center">
           <p>{{ order.totalPrice }}</p>

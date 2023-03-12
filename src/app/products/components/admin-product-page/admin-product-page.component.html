@@ -1,0 +1,40 @@
+<div *ngIf="isLoading">
+ <p>Loading...</p>
+</div>
+
+<div *ngIf="!isLoading">
+ <table class="table">
+   <thead>
+     <tr>
+       <th scope="col">#</th>
+       <th scope="col">Title</th>
+       <th scope="col">Price</th>
+       <th scope="col">Inventory</th>
+       <th scope="col">Type</th>
+       <th scope="col">Last Update</th>
+       <th scope="col"></th>
+       <th scope="col"></th>
+     </tr>
+   </thead>
+   <tbody>
+     <tr *ngFor="let product of products; let i = index">
+       <th class="center" scope="row">{{ i + 1 }}</th>
+       <td class="center">{{ product.title }}</td>
+       <td class="center">
+         <p>{{ product.price }}</p>
+       </td>
+       <td class="center">
+         <p>{{ product.inventory }}</p>
+       </td>
+       <td class="center">
+        <p>{{ getCollectionById(product.collection_id) }}</p>
+      </td>
+       <td class="center">
+         <p>{{ product.last_update }}</p>
+       </td>
+       <!-- <td> <button (click)="goToOrderPage(order.id)">Edit</button></td>
+       <td> <button (click)="deleteOrder(order.id)">Delete</button></td> -->
+     </tr>
+   </tbody>
+ </table>
+</div>

@@ -26,7 +26,7 @@ export class ProductsService {
   getProducts() {
     let data: DocumentData[] = [];
     let laptopData: any = { laptop: [] };
-    const collectionReference = collection(this.firestore, 'products');
+    const collectionReference = collection(this.firestore, 'products2');
     //return collectionData(collectionReference);
 
     return collectionData(collectionReference).pipe(
@@ -50,7 +50,7 @@ export class ProductsService {
   getCollectionProducts(urlParam: string | null) {
     let collection_title: string | null = '';
     let collection_products: any[] = [];
-    const collectionReference = collection(this.firestore, 'products');
+    const collectionReference = collection(this.firestore, 'products2');
     return collectionData(collectionReference).pipe(
       map((result: any) => {
         collection_title = urlParam;
@@ -72,7 +72,7 @@ export class ProductsService {
   }
 
   getProduct(urlParam: any) {
-    const collectionReference = collection(this.firestore, 'products');
+    const collectionReference = collection(this.firestore, 'products2');
     return collectionData(collectionReference).pipe(
       map((result : any) => {
         for (let collection of result) {
@@ -86,6 +86,11 @@ export class ProductsService {
         }
       })
     );
+  }
+
+  addCollectionProducts(collectionProducts:{[key: string]:Product[]}){
+    const collectionReference = collection(this.firestore, 'products2');
+    return addDoc(collectionReference, collectionProducts);
   }
 }
 

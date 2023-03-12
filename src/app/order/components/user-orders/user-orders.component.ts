@@ -21,7 +21,6 @@ export class UserOrdersComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private notificationService: NotificationService,
     private router: Router,
     private store: Store<{
       navbar: StoreState;

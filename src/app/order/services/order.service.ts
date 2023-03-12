@@ -22,7 +22,7 @@ export class OrderService {
 
   getOrders() {
     const collectionReference = collection(this.firestore, 'orders');
-    return collectionData(collectionReference);
+   return collectionData(collectionReference,{idField:"id"})
   }
 
   getOrder(orderId: string) {

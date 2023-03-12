@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   getOrderId,
@@ -33,6 +33,7 @@ export class OrderPageComponent implements OnInit {
     private orderService: OrderService,
     private notificationService: NotificationService,
     private router: Router,
+    private route: ActivatedRoute,
     private store: Store<{
       navbar: StoreState;
     }>
@@ -69,9 +70,9 @@ export class OrderPageComponent implements OnInit {
 
   async getOrder() {
     try {
-      const order = await this.orderService.getOrder(this.orderId as string);
+      const orderId =  this.route.snapshot.paramMap.get('id')
+      const order = await this.orderService.getOrder(orderId as string);
       this.order = order.data() as Order;
-      this.order.clientEmail = this.user.email;
     } catch (err) {
       alert(err);
     }
