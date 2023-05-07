@@ -109,7 +109,6 @@
       }
     }
   },
-  "defaultProject": "pc-shop",
   "cli": {
     "analytics": false
   }
